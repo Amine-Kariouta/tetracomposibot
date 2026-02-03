@@ -13,7 +13,7 @@ class Robot_player(Robot):
 
     param = []
     bestParam = []
-    it_per_evaluation = 400
+    it_per_evaluation = 400 # Toutes les it_per_evaluation, step affiche l'état, tire un nouveau vetceur de paramètres aléatoires, incrémente l'essai et demande un reset.
     trial = 0
 
     x_0 = 0
@@ -53,7 +53,7 @@ class Robot_player(Robot):
                 self.iteration = self.iteration + 1
                 return 0, 0, True # ask for reset
 
-        # fonction de contrôle (qui dépend des entrées sensorielles, et des paramètres)
+        # fonction de contrôle (qui dépend des entrées sensorielles, et des paramètres) / Calcule translation et rotation avec un perceptron linéaire sur 3 capteurs (front, front_left, front_right), puis passe la somme dans tanh
         translation = math.tanh ( self.param[0] + self.param[1] * sensors[sensor_front_left] + self.param[2] * sensors[sensor_front] + self.param[3] * sensors[sensor_front_right] )
         rotation = math.tanh ( self.param[4] + self.param[5] * sensors[sensor_front_left] + self.param[6] * sensors[sensor_front] + self.param[7] * sensors[sensor_front_right] )
 
@@ -67,4 +67,4 @@ class Robot_player(Robot):
 
         self.iteration = self.iteration + 1        
 
-        return translation, rotation, False
+        return translation, rotation, False # Renvoie ces commandes et continue
