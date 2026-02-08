@@ -34,7 +34,8 @@ class Robot_player(Robot):
 
     team_name = "Equipe6"  # vous pouvez modifier le nom de votre équipe
     robot_id = -1             # ne pas modifier. Permet de connaitre le numéro de votre robot.
-    memory = 0                # Compteur de blocage: détecte quand le robot ne peut pas avancer
+    memory = 0                # Compteur de blocage en subsomption: compte les itérations où robot est coincé
+                              # Si memory > 15: robot recule et tourne pour sortir de l'impasse
     
     # Paramètres Braitenberg
     braitenberg_weights = [1.0, -1.0, -1.0, 1.0]  # love wall
@@ -132,14 +133,16 @@ class Robot_player(Robot):
         # COMPTEUR DE BLOCAGE: Si on n'avance pas malgré les ordres, on est coincé
         # Incrémenter si translation commandée mais capteur avant < 0.3 (bloquer par quelque chose)
         if translation > 0.3 and sensor_to_wall[sensor_front] < 0.3:
-            self.memory += 1
+            self.memory += 1  # Robot commande avancer mais mur détecté -> coinçé
         else:
-            self.memory = 0
+            self.memory = 0   # Libre: réinitialiser compteur
         
         # Après 15 itérations coincé, inverser pour sortir du blocage
+        # Au lieu d'avancer dans le mur, on recule et tourne pour explorer ailleurs
         if self.memory > 15:
-            translation = -0.8
-            rotation = 0.2
+            translation = -0.8  # Recule: négatif = arrière
+            rotation = 0.2      # Tourne légèrement pour se dégager
+            # memory restera > 15 tant qu'on avance pas, donc on va continuer à reculer
         
         return translation, rotation
     
