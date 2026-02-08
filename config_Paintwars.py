@@ -4,7 +4,7 @@ import arenas
 
 # general -- first three parameters can be overwritten with command-line arguments (cf. "python tetracomposibot.py --help")
 
-display_mode = 0
+display_mode = 1
 arena = 1
 position = False 
 max_iterations = 2001 #401*500
@@ -20,7 +20,7 @@ display_time_stats = False
 
 # initialization : create and place robots at initial positions (returns a list containing the robots)
 
-import robot_challenger
+import equipe6_challenger
 import robot_champion
 
 def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of the robot enclosed in a square
@@ -37,8 +37,13 @@ def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of t
         orientation_champion = 180
         orientation_challenger = 0
     robots = []
+    
+    # 4 robots avec des stratégies différentes
+    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2-24, orientation_challenger, name="subsomption", team="A"))
+    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2-8, orientation_challenger, name="braitenberg_love", team="A"))
+    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2+8, orientation_challenger, name="braitenberg_hate", team="A"))
+    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2+24, orientation_challenger, name="algorithme_genetique", team="A"))
+    
     for i in range(4):
-        robots.append(robot_challenger.Robot_player(x_init_pos[0], arena_size//2-16+i*8, orientation_champion, name="", team="A"))
-    for i in range(4):
-        robots.append(robot_champion.Robot_player(x_init_pos[1], arena_size//2-16+i*8, orientation_challenger, name="", team="B"))
+        robots.append(robot_champion.Robot_player(x_init_pos[1], arena_size//2-16+i*8, orientation_champion, name="", team="B"))
     return robots

@@ -33,16 +33,16 @@ class Robot_player(Robot):
 
         # ARCHITECTURE DE SUBSOMPTION: 3 niveaux de priorité
         
-        # NIVEAU 1 (PRIORITÉ BASSE): Aller tout droit
+        # NIVEAU 1 (PRIORITÉ BASSE = Comportement par défaut): Aller tout droit
         translation = 0.5 # Vitesse moyenne à la base.
         rotation = 0.0 # Tout droit.
         
-        # NIVEAU 2 ( PRIORITÉ MOYENEN): Si mur proche → éviter les murs (priorité sur niveau 1)
+        # NIVEAU 2 ( PRIORITÉ MOYENNE): Si mur proche -> éviter les murs (priorité sur niveau 1)
         if sensor_to_wall[sensor_front] < 0.8 or sensor_to_wall[sensor_front_left] < 0.7 or sensor_to_wall[sensor_front_right] < 0.7:
             translation = sensor_to_wall[sensor_front] * 0.8
             rotation = (sensor_to_wall[sensor_front_left] - sensor_to_wall[sensor_front_right])
         
-        # NIVEAU 3 (PRIORITÉ HAUTe): Si robot détecté → aller vers les robots (priorité sur tous)
+        # NIVEAU 3 (PRIORITÉ HAUTe): Si robot détecté -> aller vers les robots (priorité sur tous)
         if sensor_to_robot[sensor_front] < 1.0 or sensor_to_robot[sensor_front_left] < 1.0 or sensor_to_robot[sensor_front_right] < 1.0:
             translation = sensor_to_robot[sensor_front] * 0.8
             rotation = -(sensor_to_robot[sensor_front_left] - sensor_to_robot[sensor_front_right])
