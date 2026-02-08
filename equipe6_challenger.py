@@ -47,7 +47,7 @@ class Robot_player(Robot):
     # Les poids finaux représentent un perceptron qui équilibre exploration et combat
     # Les poids exacts s'affichent dans la console terminal avec "[NOUVEAU MEILLEUR]"
     # Les scores sont sauvegardés dans results_genetic_*.csv (voir ligne avec bestParam)
-    ga_params = [-1, -1, -1, -1, -1, 1, 0, -1]
+    ga_params = [-1, -1, -1, -1, -1, 1, 0, -1]  # Poids optimisés pour Paint Wars (meilleur en équipe: 47 pts)
 
     def __init__(self, x_0, y_0, theta_0, name="n/a", team="n/a"):
         global nb_robots
@@ -111,7 +111,7 @@ class Robot_player(Robot):
                 sensor_to_robot.append(1.0)
         
         # NIVEAU 1 (PRIORITÉ BASSE): Aller tout droit
-        translation = 0.5  # vitesse moyenne
+        translation = 0.7  # vitesse plus rapide pour explorer plus vite
         rotation = 0.0  # tout droit
         
         # NIVEAU 2 (PRIORITÉ MOYENNE): Éviter les murs
@@ -137,9 +137,9 @@ class Robot_player(Robot):
         else:
             self.memory = 0   # Libre: réinitialiser compteur
         
-        # Après 15 itérations coincé, inverser pour sortir du blocage
+        # Après 8 itérations coincé, inverser pour sortir du blocage
         # Au lieu d'avancer dans le mur, on recule et tourne pour explorer ailleurs
-        if self.memory > 15:
+        if self.memory > 8:
             translation = -0.8  # Recule: négatif = arrière
             rotation = 0.2      # Tourne légèrement pour se dégager
             # memory restera > 15 tant qu'on avance pas, donc on va continuer à reculer
