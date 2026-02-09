@@ -5,7 +5,7 @@ import arenas
 # general -- first three parameters can be overwritten with command-line arguments (cf. "python tetracomposibot.py --help")
 
 display_mode = 1
-arena = 1
+arena = 8
 position = False 
 max_iterations = 2001 #401*500
 
@@ -20,6 +20,7 @@ display_time_stats = False
 
 # initialization : create and place robots at initial positions (returns a list containing the robots)
 
+import BOSY_robot_challenger
 import equipe6_challenger
 import robot_champion
 
@@ -31,17 +32,20 @@ def initialize_robots(arena_size=-1, particle_box=-1): # particle_box: size of t
     if position == False:
         x_init_pos = [4,93]
         orientation_champion = 0
-        orientation_challenger = 180
+        orientation_challenger = 0  # Vers l'est (intérieur de l'arène)
     else:
         x_init_pos = [93,4]
         orientation_champion = 180
         orientation_challenger = 0
     robots = []
     
-    # 4 robots avec des stratégies différentes
+    # 4 robots OPTIMISÉS avec stratégies complémentaires pour dominer l'arène
+    # - 2 chasseurs agressifs (subsomption + hateenemy)
+    # - 1 couvreur de terrain (lovewall)
+    # - 1 GA optimisé (meilleur comportement trouvé)
     robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2-24, orientation_challenger, name="subsomption", team="A"))
-    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2-8, orientation_challenger, name="braitenberg_love", team="A"))
-    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2+8, orientation_challenger, name="braitenberg_hate", team="A"))
+    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2-8, orientation_challenger, name="braitenberg_hateenemy", team="A"))
+    robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2+8, orientation_challenger, name="braitenberg_lovewall", team="A"))
     robots.append(equipe6_challenger.Robot_player(x_init_pos[0], arena_size//2+24, orientation_challenger, name="algorithme_genetique", team="A"))
     
     for i in range(4):
